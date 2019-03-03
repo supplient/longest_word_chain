@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionDir)cmdUI\Debug\CoreSetting.obj;$(SolutionDir)cmdUI\Debug\FileReader.obj;$(SolutionDir)cmdUI\Debug\pch.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../cmdUI/Debug/pch.obj;../cmdUI/Debug/FileReader.obj;../cmdUI/Debug/CoreSetting.obj;../BIN/Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>

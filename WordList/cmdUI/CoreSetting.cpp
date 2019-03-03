@@ -19,29 +19,30 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 	bool wait_head = false, wait_tail = false;
 
 	for (int i = 1; i < argc; i++){
+		string strarg(argv[i]);
 
 		if (wait_filename) {
-			filename = argv[i];
+			filename = strarg;
 			wait_filename = false;
 			continue;
 		}
 
 		if (wait_head) {
-			string temp = argv[i];
+			string temp = strarg;
 			if (temp.length() != 1)
 				throw h_t_follow_error;
 			head = temp[0];
 			wait_head = false;
 		}
 		if (wait_tail) {
-			string temp = argv[i];
+			string temp = strarg;
 			if (temp.length() != 1)
 				throw h_t_follow_error;
 			tail = temp[0];
 			wait_tail = false;
 		}
 
-		if (argv[i] == "-w") {
+		if (strarg == "-w") {
 			if (max_char)
 				throw w_c_set_error;
 			if (max_word)
@@ -49,7 +50,7 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 			max_word = true;
 			wait_filename = true;
 		}
-		else if (argv[i] == "-c") {
+		else if (strarg == "-c") {
 			if (max_word)
 				throw w_c_set_error;
 			if (max_char)
@@ -57,24 +58,24 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 			max_char = true;
 			wait_filename = true;
 		}
-		else if (argv[i] == "-h") {
+		else if (strarg == "-h") {
 			if (head != 0)
 				throw set_again_error;
 			wait_head = true;
 		}
-		else if (argv[i] == "-t") {
+		else if (strarg == "-t") {
 			if (tail != 0)
 				throw set_again_error;
 			wait_tail = true;
 		}
-		else if (argv[i] == "-r") {
+		else if (strarg == "-r") {
 			if (enable_loop)
 				throw set_again_error;
 			enable_loop = true;
 		}
 		else
 		{
-			throw string("Invalid argument: " + string(argv[i]));
+			throw string("Invalid argument: " + strarg);
 		}
 	}
 
