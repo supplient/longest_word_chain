@@ -2,6 +2,7 @@
 #include "CoreSetting.h"
 
 using namespace std;
+using namespace cmdUI;
 
 string w_c_set_error = "-w and -c cannot set at the same time.";
 string w_c_follow_error = "When using -h or -t, you must specify a filepath followed.";

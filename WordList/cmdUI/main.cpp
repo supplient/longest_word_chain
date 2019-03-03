@@ -7,6 +7,8 @@
 #include "FileReader.h"
 
 using namespace std;
+using namespace cmdUI;
+
 int main(int argc, char *argv[])
 {
 	// Parse Input
