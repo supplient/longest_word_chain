@@ -29,5 +29,13 @@
     <ClCompile Include="CoreSettingTest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FileReaderTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\testcase\simple.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>
