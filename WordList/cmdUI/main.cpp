@@ -35,6 +35,10 @@ int main(int argc, char * argv[]) {
 		cerr << e << endl;
 		return -1;
 	}
+	cout << "Input: " << endl;
+	for (int i = 0; i < len; i++)
+		cout << words[i] << '\t';
+	cout << endl;
 
 	// TODO check file validity
 
@@ -65,10 +69,13 @@ int main(int argc, char * argv[]) {
 		cerr << "Open " + output_path + " failed." << endl;
 		return -1;
 	}
+	cout << "Output: " << endl;
 	for (int i = 0; i < res_len; i++) {
 		ofs << res[i] << endl;
+		cout << res[i] << '\t';
 	}
 	ofs.close();
+	cout << endl;
 
 	return 0;
 }
