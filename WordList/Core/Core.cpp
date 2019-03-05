@@ -7,12 +7,9 @@
 #include<algorithm>
 #include<iterator>
 
-using namespace GET_CHAIN;
-
-
-int Core::CreateMap(std::string s, int *degree) {
-	degree[s[0] - 'a']++;
-	degree[s[s.length() - 1] - 'a']++;
+int Core::CreateMap(std::string s) {
+	if (s[0] == s[s.length() - 1])
+		isSelfCircleUsed[s[0]]++;
 	Edge edge = {s, 1, s[s.length() - 1] - 'a' };
 	map[s[0] - 'a'].toLast.push_back(edge);
 	return 0;
@@ -20,37 +17,42 @@ int Core::CreateMap(std::string s, int *degree) {
 
 int Core::Recursion(std::vector<std::string>& path, int length, int point) {
 	if (map[point].toLast.empty()) {
-		if (length > MaxLen) {
-			MaxLen = length;
-			MaxPath.swap(path);
+		if (length > maxLen) {
+			maxLen = length;
+			maxPath.swap(path);
 		}
 		else {
-			path.clear();
+			path.pop_back();
 		}
 		return length;
 	}
 	for (auto iter : map[point].toLast) {
 		path.push_back(iter.word);
 		std::cout << point << " "<< iter.next << std::endl;
-		if(iter.next==iter)
+		if (iter.next == point) {
+			if (isSelfCircleUsed[point] > 0)
+				isSelfCircleUsed[point]--;
+			else continue;
+		}
 		Recursion(path, ++length, iter.next);
+		if(iter.next == point)
+			isSelfCircleUsed[point]++;
 	}
 	return 0;
 }
 
 void Core::get_max_chain(std::vector<std::string>& input) {
-	int i, degree[26] = { 0 }, maxDegree = 0;
+	int i, maxDegree = 0;
 	std::vector<std::string> path;
 	for (i = 0; i < input.size(); i++) {
-		transform(input[i].begin(), input[i].end(), input[i].begin(), ::tolower);
-		CreateMap(input[i], degree);
+		CreateMap(input[i]);
 	}
 	for (i = 0; i < 26; i++) {
 		Recursion(path, 0, i);
 	}
 	
-	std::cout << MaxPath.size() << std::endl;
-	for (auto iter : MaxPath) {
+	std::cout << maxPath.size() << std::endl;
+	for (auto iter : maxPath) {
 		std::cout << iter<<std::endl;
 	}
 }
