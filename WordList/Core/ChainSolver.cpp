@@ -11,7 +11,7 @@ int ChainSolver::CreateMap(char* c_s, bool isGetMaxChar) {
 	if(isGetMaxChar)
 		edge = {s, 1, s[s.length() - 1] - 'a' };
 	else
-		edge = {s, s.length(), s[s.length() - 1] - 'a' };
+		edge = {s, (int)s.length(), s[s.length() - 1] - 'a' };
 	map[s[0] - 'a'].toLast.push_back(edge);
 	return 0;
 }
