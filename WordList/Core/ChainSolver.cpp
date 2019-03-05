@@ -16,12 +16,9 @@ int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point
 	if (map[point].toLast.empty()) {
 		if (length > maxLen) {
 			maxLen = length;
-			maxPath.swap(path);
+			maxPath.assign(path.begin(), path.end());
 		}
-		else {
-			path.pop_back();
-		}
-		return length;
+		return length; // NOTE this return value seems to be nonsense.
 	}
 	for (auto iter : map[point].toLast) {
 		path.push_back(iter.word);
@@ -31,9 +28,10 @@ int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point
 				isSelfCircleUsed[point]--;
 			else continue;
 		}
-		Recursion(path, ++length, iter.next);
+		Recursion(path, length+1, iter.next);
 		if(iter.next == point)
 			isSelfCircleUsed[point]++;
+		path.pop_back();
 	}
 	return 0;
 }
@@ -51,8 +49,10 @@ int ChainSolver::get_max_chain(char* input[], int num, char* result[]) {
 	
 	i = 0;
 	for (auto iter : maxPath) {
-		char* new_str = new char[iter.length()];
-		strcpy_s(new_str, iter.length(), iter.c_str());
+		char* new_str = new char[iter.length()+2];
+		for (int j = 0; j < iter.length(); j++)
+			new_str[j] = iter[j];
+		new_str[iter.length()] = '\0';
 		result[i] = new_str; // TODO release such memory
 		i++;
 	}

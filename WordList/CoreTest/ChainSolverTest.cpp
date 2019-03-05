@@ -8,11 +8,11 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace CoreTest
 {		
-	TEST_CLASS(Test)
+	TEST_CLASS(ChainSolverTest)
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(simple)
 		{
 			char* words[] = {
 				"hello",
