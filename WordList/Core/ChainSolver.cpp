@@ -37,7 +37,7 @@ int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point
 }
 
 int ChainSolver::get_max_chain(char* input[], int num, char* result[]) {
-	int i, maxDegree = 0; // NOTE: maxDegree seems to be an useless remaining variable?
+	int i; // NOTE: maxDegree seems to be an useless remaining variable? ANS: yes, it has been deleted.
 	std::vector<std::string> path;
 
 	for (i = 0; i < num; i++) {
