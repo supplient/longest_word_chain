@@ -19,10 +19,11 @@ class ChainSolver
 		int isSelfCircleUsed[26] = { 0 };
 		std::vector<std::string> maxPath;
 		WordMap map[26];
-		int CreateMap(char* s);
+
+		int CreateMap(char* s ,bool isGetMaxChar);
 		int Recursion(std::vector<std::string>& path, int length, int point);
 
 	public:
-		int get_max_chain(char* input[], int num, char* result[]);
+		int get_max_chain(char* input[], int num, char* result[], bool isGetMaxChar);
 };
 
