@@ -4,6 +4,7 @@
 
 struct Edge {
 	std::string word;
+	int code;
 	int weight;
 	int next;
 };
@@ -15,9 +16,12 @@ struct WordMap {
 class ChainSolver
 {
 	private:
+		int edge_code;//give evey edge a code to record used edge.
 		int maxLen = 0;
 		int tail = -1;
-		int isSelfCircleUsed[26] = { 0 };
+		bool isUsedEdge[256] = { false };
+		bool isUsedPoint[26] = { false };
+		bool isEnableLoop = false;
 		std::vector<std::string> maxPath;
 		WordMap map[26];
 
@@ -25,6 +29,7 @@ class ChainSolver
 		int Recursion(std::vector<std::string>& path, int length, int point);
 
 	public:
-		int get_max_chain(char* input[], int num, char* result[],char head, char tail, bool isGetMaxChar);
+		ChainSolver();
+		int get_max_chain(char* input[], int num, char* result[],char head, char tail, bool isGetMaxChar, bool enable_loop);
 };
 
