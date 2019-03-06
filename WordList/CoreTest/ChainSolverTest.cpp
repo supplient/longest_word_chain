@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "testutil.h"
+#include "PyramidGenerator.h"
 #include "../Core/Core.h"
 
 #include <vector>
@@ -31,6 +32,25 @@ namespace CoreTest
 			};
 
 			testRight(words, 4, res, 4);
+		}
+
+		TEST_METHOD(large) {
+			PyramidGenerator gen;
+			gen.work();
+
+			char** words = gen.getWords();
+			int word_len = gen.getWordLen();
+			char** res = gen.getRes();
+			int res_len = gen.getResLen();
+
+			testRight(words, word_len, res, res_len);
+
+			for (int i = 0; i < word_len; i++)
+				delete[] words[i];
+			delete[] words;
+			for (int i = 0; i < res_len; i++)
+				delete[] res[i];
+			delete[] res;
 		}
 	};
 
