@@ -5,6 +5,7 @@
 #include "PyramidGenerator.h"
 #include "../Core/Core.h"
 
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -35,7 +36,7 @@ namespace CoreTest
 		}
 
 		TEST_METHOD(large) {
-			PyramidGenerator gen;
+			PyramidGenerator gen(30, 5);
 			gen.work();
 
 			char** words = gen.getWords();
@@ -43,13 +44,22 @@ namespace CoreTest
 			char** res = gen.getRes();
 			int res_len = gen.getResLen();
 
+			// save the words and res into temp files for recurring.
+			ofstream words_out("../testcase/words_temp.txt");
+			for (int i = 0; i < word_len; i++) {
+				words_out << words[i] << endl;
+			}
+			words_out.close();
+			ofstream res_out("../testcase/res_temp.txt");
+			for (int i = 0; i < res_len; i++) {
+				res_out << res[i] << endl;
+			}
+
 			testRight(words, word_len, res, res_len);
 
 			for (int i = 0; i < word_len; i++)
 				delete[] words[i];
 			delete[] words;
-			for (int i = 0; i < res_len; i++)
-				delete[] res[i];
 			delete[] res;
 		}
 	};
