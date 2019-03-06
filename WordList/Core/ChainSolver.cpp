@@ -18,7 +18,7 @@ int ChainSolver::CreateMap(char* c_s, bool isGetMaxChar) {
 
 int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point) {
 	if (map[point].toLast.empty()) {
-		if (length > maxLen) {
+		if (length > maxLen && (tail==-1 || point==tail)) {
 			maxLen = length;
 			maxPath.assign(path.begin(), path.end());
 		}
@@ -38,18 +38,34 @@ int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point
 			isSelfCircleUsed[point]++;
 		path.pop_back();
 	}
+	if (tail != -1 && point == tail) {// when tail is requested, maxPath may appear when toLast is not null.
+		if (length > maxLen) {
+			maxLen = length;
+			maxPath.assign(path.begin(), path.end());
+		}
+	}
 	return 0;
 }
 
-int ChainSolver::get_max_chain(char* input[], int num, char* result[], bool isGetMaxChar) {
+int ChainSolver::get_max_chain(char* input[], int num, char* result[], char head_input, char tail_input, bool isGetMaxChar) {
 	int i; // NOTE: maxDegree seems to be an useless remaining variable? ANS: yes, it has been deleted.
 	std::vector<std::string> path;
+	
+	if (tail_input != 0) {
+		tail = tail_input - 'a';
+	}
 
 	for (i = 0; i < num; i++) {
 		CreateMap(input[i], isGetMaxChar);
 	}
-	for (i = 0; i < 26; i++) {
-		Recursion(path, 0, i);
+
+	if (head_input != 0) {//Just DFS the request head char.
+		Recursion(path, 0, head_input - 'a');
+	}
+	else {
+		for (i = 0; i < 26; i++) {
+			Recursion(path, 0, i);
+		}
 	}
 	
 	i = 0;
