@@ -15,7 +15,8 @@ struct WordMap {
 class ChainSolver
 {
 	private:
-		int maxLen=0;
+		int maxLen = 0;
+		int tail = 0;
 		int isSelfCircleUsed[26] = { 0 };
 		std::vector<std::string> maxPath;
 		WordMap map[26];
@@ -24,6 +25,6 @@ class ChainSolver
 		int Recursion(std::vector<std::string>& path, int length, int point);
 
 	public:
-		int get_max_chain(char* input[], int num, char* result[], bool isGetMaxChar);
+		int get_max_chain(char* input[], int num, char* result[],char head, char tail, bool isGetMaxChar);
 };
 
