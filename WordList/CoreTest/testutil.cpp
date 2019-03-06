@@ -44,4 +44,8 @@ void testRightMulti(char* words[], int words_len, vector<char**> res, int res_le
 	}
 
 	Assert::IsTrue(success);
+
+	for (int i = 0; i < ret_len; i++)
+		delete[] ret_res[i];
+	delete[] ret_res;
 }
