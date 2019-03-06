@@ -18,7 +18,7 @@ int ChainSolver::CreateMap(char* c_s, bool isGetMaxChar) {
 
 int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point) {
 	if (map[point].toLast.empty()) {
-		if (length > maxLen && (tail==0 || point==tail)) {
+		if (length > maxLen && (tail==-1 || point==tail)) {
 			maxLen = length;
 			maxPath.assign(path.begin(), path.end());
 		}
@@ -37,6 +37,12 @@ int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point
 		if(iter.next == point)
 			isSelfCircleUsed[point]++;
 		path.pop_back();
+	}
+	if (tail != -1 && point == tail) {// when tail is requested, maxPath may appear when toLast is not null.
+		if (length > maxLen) {
+			maxLen = length;
+			maxPath.assign(path.begin(), path.end());
+		}
 	}
 	return 0;
 }

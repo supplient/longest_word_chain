@@ -16,7 +16,7 @@ class ChainSolver
 {
 	private:
 		int maxLen = 0;
-		int tail = 0;
+		int tail = -1;
 		int isSelfCircleUsed[26] = { 0 };
 		std::vector<std::string> maxPath;
 		WordMap map[26];
