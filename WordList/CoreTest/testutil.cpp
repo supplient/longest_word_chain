@@ -8,9 +8,15 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
 void testRight(char* words[], int words_len, char* res[], int res_len, 
+					bool is_max_char,
 					char head, char tail, bool enable_loop) {
 	char** ret_res = new char*[words_len];
-	int ret_len = Core::gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
+	int ret_len;
+
+	if (is_max_char)
+		ret_len = Core::gen_chain_char(words, words_len, ret_res, head, tail, enable_loop);
+	else
+		ret_len = Core::gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
 
 	Assert::AreEqual(ret_len, res_len);
 	for (int i = 0; i < res_len; i++) {
@@ -21,17 +27,29 @@ void testRight(char* words[], int words_len, char* res[], int res_len,
 	delete[] ret_res;
 }
 
-void testRightMulti(char* words[], int words_len, vector<char**> res, int res_len,
+void testRightMulti(char* words[], int words_len, vector<char**> res, vector<int> res_len,
+						bool is_max_char,
 						char head, char tail, bool enable_loop) {
-	char** ret_res = new char*[words_len];
-	int ret_len = Core::gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
+	if (res.size() != res_len.size())
+		throw string("res's size should equal with res_len's size");
 
-	Assert::AreEqual(ret_len, res_len);
+	char** ret_res = new char*[words_len];
+	int ret_len;
+
+	if (is_max_char)
+		ret_len = Core::gen_chain_char(words, words_len, ret_res, head, tail, enable_loop);
+	else
+		ret_len = Core::gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
+
 
 	bool success = false;
-	for (auto sub_res: res) {
+	for (unsigned int i = 0; i < res.size(); i++) {
+		if (ret_len != res_len[i])
+			continue;
+
+		char** sub_res = res[i];
 		try {
-			for (int j = 0; j < res_len; j++)
+			for (int j = 0; j < res_len[i]; j++)
 				Assert::AreEqual(0, strcmp(ret_res[j], sub_res[j]));
 		}
 		catch (...) {
@@ -42,6 +60,7 @@ void testRightMulti(char* words[], int words_len, vector<char**> res, int res_le
 		success = true;
 		break;
 	}
+
 
 	Assert::IsTrue(success);
 

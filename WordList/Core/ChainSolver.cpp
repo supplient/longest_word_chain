@@ -58,7 +58,7 @@ int ChainSolver::get_max_chain(char* input[], int num, char* result[], char head
 		tail = tail_input - 'a';
 	}
 
-	isEnableLoop = enable_loop；
+	isEnableLoop = enable_loop;
 
 	for (i = 0; i < num; i++) {
 		CreateMap(input[i], isGetMaxChar);
