@@ -9,13 +9,11 @@
 int Core::gen_chain_word(char * words[], int len, char * result[], char head, char tail, bool enable_loop)
 {
 	ChainSolver solver;
-	return solver.get_max_chain(words, len, result); // TODO more setting for head, tail, enable_loop
+	return solver.get_max_chain(words, len, result, head, tail, false, false); // TODO more setting for head, tail, enable_loop
 }
 
 int Core::gen_chain_char(char * words[], int len, char * result[], char head, char tail, bool enable_loop)
 {
-	// TODO
-	result[0] = (char*)"some";
-	result[1] = (char*)"char";
-	return 2;
+	ChainSolver solver;
+	return solver.get_max_chain(words, len, result, head, tail, true, false); // TODO more setting for head, tail, enable_loop
 }
