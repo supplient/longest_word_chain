@@ -12,13 +12,18 @@ using namespace std;
 PyramidGenerator::PyramidGenerator(unsigned int word_num, int target_depth)
 	:word_num(word_num), target_depth(target_depth)
 {
+	words = NULL;
+	word_len = 0;
+	res = NULL;
+	res_len = 0;
+
 	worked = false;
 
 	if (target_depth < 1)
 		throw string("target_depth should larget than 0");
 	if (target_depth > 20)
 		throw string("target_depth should be less than 20");
-	if (word_num < target_depth)
+	if ((int)word_num < target_depth)
 		throw string("word_num should be larger than target_depth");
 }
 
@@ -55,11 +60,11 @@ char* genRandomStr(default_random_engine &rand_eng, char head, char tail) {
 
 void PyramidGenerator::work()
 {
-	unsigned int rand_seed = chrono::system_clock::now().time_since_epoch().count();
+	auto rand_seed = chrono::system_clock::now().time_since_epoch().count();
 	ofstream seed_out("../testcase/seed_temp.txt");
 	seed_out << rand_seed;
 	seed_out.close();
-	default_random_engine rand_eng(rand_seed);
+	default_random_engine rand_eng((unsigned int)rand_seed);
 
 	// Build alpha tree
 	bool alpha_table[26] = { false };
@@ -125,10 +130,8 @@ void PyramidGenerator::work()
 	fate_nodes.push_back(final_node);
 
 	// Generate words
-	words = new char*[word_num];
-	int wi = 0;
-	res = new char*[target_depth];
-	int ri = 0;
+	vector<char*> v_words;
+	vector<char*> v_res;
 
 	unsigned int node_expect_word_num = (word_num - target_depth) / ( 26 - target_depth );
 	unsigned int min_node_expect_word_num = 1;
@@ -150,10 +153,8 @@ void PyramidGenerator::work()
 			if (iter != fate_nodes.end()) {
 				// is a fate node
 				char* str = genRandomStr(rand_eng, head_alpha, tail_alpha);
-				words[wi] = str;
-				wi++;
-				res[ri] = str;
-				ri++;
+				v_words.push_back(str);
+				v_res.push_back(str);
 				continue;
 			}
 
@@ -161,8 +162,7 @@ void PyramidGenerator::work()
 			unsigned int word_num = node_word_dist(rand_eng);
 			for (unsigned int i = 0; i < word_num; i++) {
 				char* str = genRandomStr(rand_eng, head_alpha, tail_alpha);
-				words[wi] = str;
-				wi++;
+				v_words.push_back(str);
 			}
 		}
 
@@ -171,7 +171,15 @@ void PyramidGenerator::work()
 		for(Node* node: prev_nodes)
 			now_nodes.insert(now_nodes.end(), node->next.begin(), node->next.end());
 	}
-	word_len = wi;
+
+	words = new char*[v_words.size()+1];
+	for (unsigned int i = 0; i < v_words.size(); i++)
+		words[i] = v_words[i];
+	word_len = v_words.size();
+	
+	res = new char*[v_res.size()+1];
+	for (unsigned int i = 0; i < v_res.size(); i++)
+		res[i] = v_res[i];
 	res_len = target_depth;
 
 	worked = true;

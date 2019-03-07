@@ -4,9 +4,9 @@
 
 struct Edge {
 	std::string word;
-	int code;
-	int weight;
-	int next;
+	int code=0;
+	int weight=0;
+	int next=0;
 };
 struct WordMap {
 	std::vector<Edge> toLast;
