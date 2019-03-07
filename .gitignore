@@ -33,3 +33,4 @@ Debug
 # Executables
 *.out
 *.app
+/WordList/CoreTest/LastCoverageResults.log

@@ -98,8 +98,9 @@ namespace CoreTest
 				"cdef"
 			};
 			vector<char**> res;
+			vector<int> res_len;
 
-			testRightMulti(words, 3, res, 0);
+			testRightMulti(words, 3, res, res_len);
 		}
 
 		TEST_METHOD(multi_occur) {
@@ -170,11 +171,100 @@ namespace CoreTest
 			{"acc", "cbd", "dak", "kg"},
 			};
 			vector<char**> res;
-			for (int i = 0; i < 4; i++)
+			vector<int> res_len;
+			for (int i = 0; i < 4; i++) {
 				res.push_back(c_res[i]);
+				res_len.push_back(4);
+			}
+			
 
-			testRightMulti(words, 6, res, 4);
+			testRightMulti(words, 6, res, res_len);
 		}
 
+	};
+
+	TEST_CLASS(only_c_normal) {
+	public:
+		TEST_METHOD(both_word_and_char_max) {
+			char* words[] = {
+				"ab",
+				"bc",
+				"ck",
+				"cds",
+				"slm"
+			};
+			char* res[] = {
+				"ab",
+				"bc",
+				"cds",
+				"slm"
+			};
+
+			testRight(words, 5, res, 4, true);
+		}
+
+		TEST_METHOD(with_same_word_num) {
+			char* words[] = {
+				"ab",
+				"bffc",
+				"cmd",
+				"ef",
+				"fg",
+				"gh",
+				"ij",
+				"jk",
+				"kl"
+			};
+			char* res[] = {
+				"ab",
+				"bffc",
+				"cmd"
+			};
+
+			testRight(words, 9, res, 3, true);
+		}
+
+		TEST_METHOD(not_max_word_num) {
+			char* words[] = {
+				"destiny",
+				"yellowandgreenandrez",
+				"yb",
+				"bc",
+				"cz",
+				"ze"
+			};
+			char* res[] = {
+				"destiny",
+				"yellowandgreenandrez",
+				"ze"
+			};
+
+			testRight(words, 6, res, 3, true);
+		}
+
+		TEST_METHOD(multi_chain) {
+			char* words[] = {
+				"ab",
+				"bkm",
+				"bkn",
+				"mz",
+				"zt",
+				"ncct",
+				"tfd"
+			};
+			char* c_res[2][5] = {
+			{"ab", "bkm", "mz", "zt", "tfd"},
+			{"ab", "bkn", "ncct", "tfd"}
+			};
+			vector<char**> res;
+			for (int i = 0; i < 2; i++) {
+				res.push_back(c_res[i]);
+			}
+			vector<int> res_len;
+			res_len.push_back(5);
+			res_len.push_back(4);
+
+			testRightMulti(words, 7, res, res_len, true);
+		}
 	};
 }
