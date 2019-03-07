@@ -416,4 +416,113 @@ namespace CoreTest
 			testRightMulti(words, 4, res, res_len, true, 'z', 'f');
 		}
 	};
+
+	TEST_CLASS(only_r_w) {
+		TEST_METHOD(whole_loop) {
+			char* words[] = {
+				"ab",
+				"bc",
+				"cd",
+				"de",
+				"ea"
+			};
+			char* res[] = {
+				"ab",
+				"bc",
+				"cd",
+				"de",
+				"ea"
+			};
+
+			testRight(words, 5, res, 5, false, 0, 0, true);
+		}
+
+		TEST_METHOD(only_one_alpha) {
+			char* words[] = {
+				"abca",
+				"akkka",
+				"afka",
+				"aaaaa"
+			};
+			char* res[] = {
+				"abca",
+				"akkka",
+				"afka",
+				"aaaaa"
+			};
+
+			testRight(words, 4, res, 4, false, 0, 0, true);
+		}
+
+		TEST_METHOD(part_loop) {
+			char* words[] = {
+				"abc",
+				"cba",
+				"act",
+				"ct"
+				"tm",
+			};
+			char* res[] = {
+				"abc",
+				"cba",
+				"act",
+				"tm"
+			};
+			
+			testRight(words, 5, res, 4, false, 0, 0, true);
+		}
+
+		TEST_METHOD(multi_loop) {
+			char* words[] = {
+				"ab",
+				"bc",
+				"ca",
+
+				"de",
+				"ef",
+				"fd",
+
+				"gh",
+				"hi",
+				"ig"
+			};
+			char* c_res[3][3] = {
+				{"ab", "bc", "ca"},
+				{"de", "ef", "fd"},
+				{"gh", "hi", "ig"}
+			};
+			vector<char**> res;
+			res.push_back(c_res[0]);
+			res.push_back(c_res[1]);
+			res.push_back(c_res[2]);
+			vector<int> res_len;
+			res_len.push_back(3);
+			res_len.push_back(3);
+			res_len.push_back(3);
+
+			testRightMulti(words, 9, res, res_len, false, 0, 0, true);
+		}
+
+		TEST_METHOD(no_loop_in_res) {
+			char* words[] = {
+				"abc",
+				"cbk",
+				"kta",
+				"kmz",
+				"zfy",
+				"yfx",
+				"xfo"
+			};
+			char* res[] = {
+				"abc",
+				"cbk",
+				"kmz",
+				"zfy",
+				"yfx",
+				"xfo"
+			};
+
+			testRight(words, 7, res, 6, false, 0, 0, true);
+		}
+	};
 }

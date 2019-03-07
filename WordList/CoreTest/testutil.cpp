@@ -7,6 +7,14 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
+bool occur_in(char* str, char* target[], int tar_len) {
+	for (int j = 0; j < tar_len; j++) {
+		if (strcmp(str, target[j]) == 0)
+			return true;
+	}
+	return false;
+}
+
 void testRight(char* words[], int words_len, char* res[], int res_len, 
 					bool is_max_char,
 					char head, char tail, bool enable_loop) {
@@ -19,8 +27,14 @@ void testRight(char* words[], int words_len, char* res[], int res_len,
 		ret_len = Core::gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
 
 	Assert::AreEqual(ret_len, res_len);
+	
 	for (int i = 0; i < res_len; i++) {
-		Assert::AreEqual(0, strcmp(ret_res[i], res[i]));
+		if (enable_loop) {
+			Assert::IsTrue(occur_in(ret_res[i], res, res_len));
+		}
+		else {
+			Assert::AreEqual(0, strcmp(ret_res[i], res[i]));
+		}
 		delete[] ret_res[i];
 	}
 			
@@ -49,8 +63,14 @@ void testRightMulti(char* words[], int words_len, vector<char**> res, vector<int
 
 		char** sub_res = res[i];
 		try {
-			for (int j = 0; j < res_len[i]; j++)
-				Assert::AreEqual(0, strcmp(ret_res[j], sub_res[j]));
+			for (int j = 0; j < res_len[i]; j++) {
+				if (enable_loop) {
+					Assert::IsTrue(occur_in(ret_res[j], sub_res, res_len[i]));
+				}
+				else {
+					Assert::AreEqual(0, strcmp(ret_res[j], sub_res[j]));
+				}
+			}
 		}
 		catch (...) {
 			continue;
