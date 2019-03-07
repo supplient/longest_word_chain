@@ -2,11 +2,12 @@
 #include "ChainSolver.h"
 
 #include <cstring>
+#include<iterator>
 
 ChainSolver::ChainSolver(void) {
 }
 
-unsigned int APHash(std::string s) {
+unsigned int ChainSolver::APHash(std::string s) {
 	unsigned int hash = 0;
 	int i,k;
 	for (i = 0,k=0; k<s.length(); i++)
@@ -27,12 +28,13 @@ int ChainSolver::CreateMap(char* c_s, bool isGetMaxChar) {
 	std::string s(c_s);
 	Edge edge;
 	unsigned int code = APHash(s);
-	while (inputWord.find(code) != inputWord.end()) {
-		return 0;// Repeat Word!
+	if (inputWord.find(code) != inputWord.end()) {// Repeat Word!
+		// TODO: When Hash Collisions happen, code need change and insert.
+		return 0;
 	}
 	inputWord.insert(std::pair<unsigned int, std::string>(code,s));
 	isUsedEdge.insert(std::pair<unsigned int, bool>(code, false));
-	if(isGetMaxChar)
+	if(!isGetMaxChar)
 		edge = {s, code, 1, s[s.length() - 1] - 'a' };
 	else
 		edge = {s, code, (int)s.length(), s[s.length() - 1] - 'a' };
@@ -41,31 +43,22 @@ int ChainSolver::CreateMap(char* c_s, bool isGetMaxChar) {
 }
 
 int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point) {
-	if (map[point].toLast.empty()) {
-		if (length > maxLen && (tail==-1 || point==tail)) {
-			maxLen = length;
-			maxPath.assign(path.begin(), path.end());
-		}
-		return 0; // NOTE this return value seems to be nonsense. ANS: changed to 0
-	}
 	for (auto iter : map[point].toLast) {
+		if (isUsedEdge.find(iter.code)->second == true)
+			continue;
 		path.push_back(iter.word);
 		if (isUsedPoint[iter.next] == true && !isEnableLoop && point != iter.next) {
 			//TODO: throw an EXCEPTION "words construct a loop!"
 		}
-		if (isUsedEdge[iter.code] == true) {
-			path.pop_back();
-			continue;
-		}
 		isUsedPoint[iter.next] = true;
-		isUsedEdge[iter.code] = true;
+		isUsedEdge.find(iter.code)->second = true;
 		//NOTE: when needing max num: weight=1, when needing max char: weight = word's length.
 		Recursion(path, length+iter.weight, iter.next);
-		isUsedEdge[iter.code] = false;
+		isUsedEdge.find(iter.code)->second = false;
 		isUsedPoint[iter.next] = false;
 		path.pop_back();
 	}
-	if (tail != -1 && point == tail && length > maxLen) {// When tail is requested, maxPath may appear when toLast is not null.
+	if (length > maxLen && (tail == -1 || point == tail)) {
 		maxLen = length;
 		maxPath.assign(path.begin(), path.end());
 	}
@@ -102,7 +95,7 @@ int ChainSolver::get_max_chain(char* input[], int num, char* result[], char head
 	if (maxPath.size() == 1) {
 		maxPath.clear();
 	}
-	
+
 	i = 0;
 	for (auto iter : maxPath) {
 		char* new_str = new char[iter.length()+2];

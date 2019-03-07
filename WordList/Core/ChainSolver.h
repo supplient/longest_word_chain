@@ -3,6 +3,8 @@
 #include<vector>
 #include<unordered_map>
 
+#define MAX_UNSIGNED_INT 4294967294
+
 struct Edge {
 	std::string word;
 	unsigned int code;
@@ -21,8 +23,8 @@ class ChainSolver
 		int tail = -1;
 		bool isUsedPoint[26] = { false };
 		bool isEnableLoop = false;
-		std::vector<std::string> maxPath;
 		WordMap map[26];
+		std::vector<std::string> maxPath;
 		std::unordered_map<unsigned int, std::string> inputWord;
 		std::unordered_map<unsigned int, bool> isUsedEdge;
 
