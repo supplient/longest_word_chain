@@ -17,6 +17,7 @@ namespace CoreTest
 {		
 	TEST_CLASS(only_w_normal) {
 	public:
+
 		TEST_METHOD(simple)
 		{
 			char* words[] = {
@@ -359,7 +360,7 @@ namespace CoreTest
 				"kmt"
 			};
 
-			testRight(words, 6, res, 3, true, 'a', 't');
+			testRight(words, 7, res, 3, true, 'a', 't');
 		}
 
 		TEST_METHOD(part_of_max) {
@@ -377,7 +378,7 @@ namespace CoreTest
 				"kmt"
 			};
 
-			testRight(words, 6, res, 2, true, 'b', 't');
+			testRight(words, 7, res, 2, true, 'b', 't');
 		}
 
 		TEST_METHOD(not_max_without_assign) {
@@ -413,7 +414,7 @@ namespace CoreTest
 			res_len.push_back(2);
 			res_len.push_back(3);
 
-			testRightMulti(words, 4, res, res_len, true, 'z', 'f');
+			testRightMulti(words, 5, res, res_len, true, 'z', 'f');
 		}
 	};
 
@@ -459,8 +460,8 @@ namespace CoreTest
 				"abc",
 				"cba",
 				"act",
-				"ct"
-				"tm",
+				"ct",
+				"tm"
 			};
 			char* res[] = {
 				"abc",
@@ -514,6 +515,7 @@ namespace CoreTest
 				"xfo"
 			};
 			char* res[] = {
+				"kta",
 				"abc",
 				"cbk",
 				"kmz",
@@ -522,7 +524,7 @@ namespace CoreTest
 				"xfo"
 			};
 
-			testRight(words, 7, res, 6, false, 0, 0, true);
+			testRight(words, 7, res, 7, false, 0, 0, true);
 		}
 	};
 }
