@@ -18,7 +18,7 @@ bool occur_in(char* str, char* target[], int tar_len) {
 void testRight(char* words[], int words_len, char* res[], int res_len, 
 					bool is_max_char,
 					char head, char tail, bool enable_loop) {
-	char** ret_res = new char*[words_len];
+	char** ret_res = new char*[words_len+1];
 	int ret_len;
 
 	if (is_max_char)
@@ -47,7 +47,7 @@ void testRightMulti(char* words[], int words_len, vector<char**> res, vector<int
 	if (res.size() != res_len.size())
 		throw string("res's size should equal with res_len's size");
 
-	char** ret_res = new char*[words_len];
+	char** ret_res = new char*[words_len+1];
 	int ret_len;
 
 	if (is_max_char)

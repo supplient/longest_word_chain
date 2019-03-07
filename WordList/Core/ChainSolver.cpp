@@ -80,7 +80,7 @@ int ChainSolver::get_max_chain(char* input[], int num, char* result[], char head
 	i = 0;
 	for (auto iter : maxPath) {
 		char* new_str = new char[iter.length()+2];
-		for (int j = 0; j < iter.length(); j++)
+		for (unsigned int j = 0; j < iter.length(); j++)
 			new_str[j] = iter[j];
 		new_str[iter.length()] = '\0';
 		result[i] = new_str; // TODO release such memory
