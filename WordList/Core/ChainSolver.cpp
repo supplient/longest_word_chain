@@ -4,16 +4,38 @@
 #include <cstring>
 
 ChainSolver::ChainSolver(void) {
-	edge_code = 0;
+}
+
+unsigned int APHash(std::string s) {
+	unsigned int hash = 0;
+	int i,k;
+	for (i = 0,k=0; k<s.length(); i++)
+	{
+		if ((i & 1) == 0)
+		{
+			hash ^= ((hash << 7) ^ (s[k++]) ^ (hash >> 3));
+		}
+		else
+		{
+			hash ^= (~((hash << 11) ^ (s[k++]) ^ (hash >> 5)));
+		}
+	}
+	return (hash & 0x7FFFFFFF);
 }
 
 int ChainSolver::CreateMap(char* c_s, bool isGetMaxChar) {
 	std::string s(c_s);
 	Edge edge;
+	unsigned int code = APHash(s);
+	while (inputWord.find(code) != inputWord.end()) {
+		return 0;// Repeat Word!
+	}
+	inputWord.insert(std::pair<unsigned int, std::string>(code,s));
+	isUsedEdge.insert(std::pair<unsigned int, bool>(code, false));
 	if(isGetMaxChar)
-		edge = {s, edge_code++, 1, s[s.length() - 1] - 'a' };
+		edge = {s, code, 1, s[s.length() - 1] - 'a' };
 	else
-		edge = {s, edge_code++, (int)s.length(), s[s.length() - 1] - 'a' };
+		edge = {s, code, (int)s.length(), s[s.length() - 1] - 'a' };
 	map[s[0] - 'a'].toLast.push_back(edge);
 	return 0;
 }

@@ -1,10 +1,11 @@
 #pragma once
 #include<string>
 #include<vector>
+#include<unordered_map>
 
 struct Edge {
 	std::string word;
-	int code;
+	unsigned int code;
 	int weight;
 	int next;
 };
@@ -16,15 +17,16 @@ struct WordMap {
 class ChainSolver
 {
 	private:
-		int edge_code;//give evey edge a code to record used edge.
 		int maxLen = 0;
 		int tail = -1;
-		bool isUsedEdge[256] = { false };
 		bool isUsedPoint[26] = { false };
 		bool isEnableLoop = false;
 		std::vector<std::string> maxPath;
 		WordMap map[26];
+		std::unordered_map<unsigned int, std::string> inputWord;
+		std::unordered_map<unsigned int, bool> isUsedEdge;
 
+		unsigned int APHash(std::string s);
 		int CreateMap(char* s ,bool isGetMaxChar);
 		int Recursion(std::vector<std::string>& path, int length, int point);
 
