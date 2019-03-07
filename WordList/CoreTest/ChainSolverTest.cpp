@@ -267,4 +267,153 @@ namespace CoreTest
 			testRightMulti(words, 7, res, res_len, true);
 		}
 	};
+
+	TEST_CLASS(mix_w_h_t) {
+	public:
+		TEST_METHOD(max_without_assign) {
+			char* words[] = {
+				"abc",
+				"ckl",
+				"lmj",
+				"lme",
+				"jhk"
+			};
+			char* res[] = {
+				"abc",
+				"ckl",
+				"lmj",
+				"jhk"
+			};
+
+			testRight(words, 5, res, 4, false, 'a', 'k');
+		}
+
+		TEST_METHOD(part_of_max) {
+			char* words[] = {
+				"abc",
+				"ckl",
+				"lmj",
+				"lme",
+				"jhk"
+			};
+			char* res[] = {
+				"ckl",
+				"lmj"
+			};
+
+			testRight(words, 5, res, 2, false, 'c', 'j');
+		}
+
+		TEST_METHOD(not_max_without_assign) {
+			char* words[] = {
+				"abc",
+				"ckl",
+				"lmj",
+				"lme",
+				"jhk"
+			};
+			char* res[] = {
+				"ckl",
+				"lme"
+			};
+
+			testRight(words, 5, res, 2, false, 'c', 'e');
+		}
+
+		TEST_METHOD(multi_after_assign) {
+			char* words[] = {
+				"ab",
+				"bmk",
+				"bnk",
+				"kf"
+			};
+			char* c_res[2][3] = {
+				{"ab", "bmk"},
+				{"ab", "bnk"}
+			};
+			vector<char**> res;
+			vector<int> res_len;
+			for (int i = 0; i < 2; i++) {
+				res_len.push_back(2);
+				res.push_back(c_res[i]);
+			}
+
+			testRightMulti(words, 4, res, res_len, false, 'a', 'k');
+		}
+	};
+
+	TEST_CLASS(mix_c_h_t) {
+		TEST_METHOD(max_without_assign) {
+			char* words[] = {
+				"ab",
+				"bc",
+				"cd",
+				"de",
+				"ef",
+				"bzzzzzzzzzzzzzzzzk",
+				"kmt"
+			};
+			char* res[] = {
+				"ab",
+				"bzzzzzzzzzzzzzzzzk",
+				"kmt"
+			};
+
+			testRight(words, 6, res, 3, true, 'a', 't');
+		}
+
+		TEST_METHOD(part_of_max) {
+			char* words[] = {
+				"ab",
+				"bc",
+				"cd",
+				"de",
+				"ef",
+				"bzzzzzzzzzzzzzzzzk",
+				"kmt"
+			};
+			char* res[] = {
+				"bzzzzzzzzzzzzzzzzk",
+				"kmt"
+			};
+
+			testRight(words, 6, res, 2, true, 'b', 't');
+		}
+
+		TEST_METHOD(not_max_without_assign) {
+			char* words[] = {
+				"ab",
+				"zfjidjifewb",
+				"bf"
+			};
+			char* res[] = {
+				"ab",
+				"bf"
+			};
+
+			testRight(words, 3, res, 2, true, 'a', 'f');
+		}
+
+		TEST_METHOD(multi_after_assign) {
+			char* words[] = {
+				"az",
+				"zffffb",
+				"zm",
+				"mffb",
+				"bf"
+			};
+			char* c_res[2][4] = {
+				{"zffffb", "bf"},
+				{"zm", "mffb", "bf"}
+			};
+			vector<char**> res;
+			res.push_back(c_res[0]);
+			res.push_back(c_res[1]);
+			vector<int> res_len;
+			res_len.push_back(2);
+			res_len.push_back(3);
+
+			testRightMulti(words, 4, res, res_len, true, 'z', 'f');
+		}
+	};
 }
