@@ -76,6 +76,10 @@ int ChainSolver::get_max_chain(char* input[], int num, char* result[], char head
 			isUsedPoint[i] = false;
 		}
 	}
+
+	if (maxPath.size() == 1) {
+		maxPath.clear();
+	}
 	
 	i = 0;
 	for (auto iter : maxPath) {
