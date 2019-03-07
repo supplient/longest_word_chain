@@ -36,7 +36,7 @@ int main(int argc, char * argv[]) {
 		return -1;
 	}
 	cout << "Input: " << endl;
-	for (int i = 0; i < len; i++)
+	for (unsigned int i = 0; i < len; i++)
 		cout << words[i] << '\t';
 	cout << endl;
 
