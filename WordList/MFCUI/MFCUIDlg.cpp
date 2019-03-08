@@ -12,6 +12,7 @@
 
 #include <string>
 #include <fstream>
+#include <sstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,6 +26,7 @@
 CMFCUIDlg::CMFCUIDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MFCUI_DIALOG, pParent)
 	, m_wc_radio(0)
+	, m_input_file(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -33,6 +35,7 @@ void CMFCUIDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Radio(pDX, IDC_RADIO_w, m_wc_radio);
+	DDX_Radio(pDX, IDC_RADIO_input_hand, m_input_file);
 }
 
 BEGIN_MESSAGE_MAP(CMFCUIDlg, CDialogEx)
@@ -46,6 +49,9 @@ BEGIN_MESSAGE_MAP(CMFCUIDlg, CDialogEx)
 	ON_EN_UPDATE(IDC_EDIT_h, &CMFCUIDlg::OnEnUpdateEdith)
 	ON_EN_UPDATE(IDC_EDIT_t, &CMFCUIDlg::OnEnUpdateEditt)
 	ON_BN_CLICKED(IDOK, &CMFCUIDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_RADIO_input_hand, &CMFCUIDlg::OnBnClickedRadioinputhand)
+	ON_BN_CLICKED(IDC_RADIO_input_file, &CMFCUIDlg::OnBnClickedRadioinputhand)
+	ON_BN_CLICKED(IDC_BUTTON_EXPORT, &CMFCUIDlg::OnBnClickedButtonExport)
 END_MESSAGE_MAP()
 
 
@@ -219,12 +225,48 @@ void CMFCUIDlg::callWarningBox(LPCTSTR str) {
 
 void CMFCUIDlg::OnBnClickedOk()
 {
-	// Get & Check path
-	CString str_path;
-	((CEdit*)GetDlgItem(IDC_EDIT_PATH))->GetWindowTextW(str_path);
-	if (str_path.GetLength() < 1) {
-		callWarningBox(L"Must input a file path.");
-		return;
+
+	// Load Input
+	char **words;
+	unsigned int len;
+	// Check input method
+	if (m_input_file) {
+		// Get & Check path
+		CString str_path;
+		((CEdit*)GetDlgItem(IDC_EDIT_PATH))->GetWindowTextW(str_path);
+		if (str_path.GetLength() < 1) {
+			callWarningBox(L"Must input a file path.");
+			return;
+		}
+		// Read File
+		try {
+			FileReader reader;
+			words = reader.read(std::string(CW2A(str_path.GetString())));
+			len = reader.getReadLen();
+		}
+		catch (std::string e) {
+			callWarningBox(CString(e.c_str()));
+			return;
+		}
+	}
+	else {
+		// Get input
+		CString str_input;
+		((CEdit*)GetDlgItem(IDC_EDIT_input))->GetWindowTextW(str_input);
+		
+		// TODO Think about whether handy input need non-empty?
+
+		// Process Input
+		try {
+			StreamReader reader;
+			std::istringstream str_in(std::string(CW2A(str_input.GetString())));
+			words = reader.read(str_in);
+			len = reader.getReadLen();
+		}
+		catch (std::string e) {
+			callWarningBox(CString(e.c_str()));
+			return;
+		}
 	}
 
 	// Get & Check h,t
@@ -273,48 +315,6 @@ void CMFCUIDlg::OnBnClickedOk()
 	bool enable_loop;
 	enable_loop = ((CButton*)GetDlgItem(IDC_CHECK_r))->GetCheck();
 
-	// Output the command for user to check
-	CString str_cmd;
-	if (enable_loop)
-		str_cmd.Append(L" -r");
-	if (use_h) {
-		str_cmd.Append(L" -h ");
-		str_cmd.Append(CString(char_h, 1));
-	}
-	if (use_t) {
-		str_cmd.Append(L" -t ");
-		str_cmd.Append(CString(char_t, 1));
-	}
-	if (max_char)
-		str_cmd.Append(L" -c ");
-	else
-		str_cmd.Append(L" -w ");
-	str_cmd.Append(str_path);
-
-	if (MessageBoxW(
-		L"Using options:\n" + str_cmd, 
-		L"Check Options", 
-		MB_OKCANCEL | MB_SYSTEMMODAL)
-			!= IDOK) {
-		return;
-	}
-
-	// Update cmd show control
-	((CEdit*)GetDlgItem(IDC_EDIT_cmd))->SetWindowTextW(str_cmd);
-
-	// Read File
-	char **words;
-	unsigned int len;
-	try {
-		FileReader reader;
-		words = reader.read(std::string(CW2A(str_path.GetString())));
-		len = reader.getReadLen();
-	}
-	catch (std::string e) {
-		callWarningBox(CString(e.c_str()));
-		return;
-	}
-
 	// Call Core
 	char* res[MAX_WORD_NUM];
 	int res_len;
@@ -333,8 +333,35 @@ void CMFCUIDlg::OnBnClickedOk()
 		);
 	}
 
+	// Update output show control
+
+	CString str_output;
+	for (int i = 0; i < res_len; i++) {
+		str_output.Append(CString(res[i]));
+		str_output.Append(L"\r\n");
+	}
+	((CEdit*)GetDlgItem(IDC_EDIT_output))->SetWindowTextW(str_output);
+}
+
+void CMFCUIDlg::OnBnClickedRadioinputhand()
+{
+	UpdateData(TRUE);
+	if (m_input_file) {
+		GetDlgItem(IDC_EDIT_PATH)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BUTTON1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_input)->EnableWindow(FALSE);
+	}
+	else {
+		GetDlgItem(IDC_EDIT_PATH)->EnableWindow(FALSE);
+		GetDlgItem(IDC_BUTTON1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_input)->EnableWindow(TRUE);
+	}
+}
+
+
+void CMFCUIDlg::OnBnClickedButtonExport()
+{
 	// Output result to File
-	// && Update output show control
 	std::string output_path = "../BIN/solution.txt";
 	std::ofstream ofs(output_path);
 	if (!ofs.is_open()) {
@@ -344,12 +371,11 @@ void CMFCUIDlg::OnBnClickedOk()
 	}
 
 	CString str_output;
-	for (int i = 0; i < res_len; i++) {
-		ofs << res[i] << std::endl;
-		str_output.Append(CString(res[i]));
-		str_output.Append(L"\t");
-	}
-	ofs.close();
-	((CEdit*)GetDlgItem(IDC_EDIT_output))->SetWindowTextW(str_output);
-}
+	((CEdit*)GetDlgItem(IDC_EDIT_output))->GetWindowTextW(str_output);
+	ofs << std::string(CW2A(str_output.GetString()));
 
+	ofs.close();
+
+	// Notice user.
+	MessageBox(L"Has exported to " + CString(output_path.c_str()));
+}

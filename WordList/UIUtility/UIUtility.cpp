@@ -20,13 +20,23 @@ char** FileReader::read(string filename) {
 	if (!ifs.is_open()) {
 		throw string("Open " + filename + " failed.");
 	}
+	
+	StreamReader stream_reader;
+	char** words = stream_reader.read(ifs);
+	read_len = stream_reader.getReadLen();
 
+	ifs.close();
+	return words;
+}
+
+char ** StreamReader::read(istream & in)
+{
 	char **words = new char*[MAX_WORD_NUM];
 	unsigned int wi = 0;
 	char *temp = new char[MAX_WORD_LEN];
 	unsigned int ti = 0;
-	while (ifs.good()) {
-		char c = ifs.get();
+	while (in.good()) {
+		char c = in.get();
 
 		if (isalpha(c)) {
 			temp[ti] = tolower(c);
@@ -59,8 +69,7 @@ char** FileReader::read(string filename) {
 		wi++;
 	}
 
-	ifs.close();
-
 	read_len = wi;
+
 	return words;
 }

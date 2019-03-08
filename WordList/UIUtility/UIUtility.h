@@ -11,6 +11,16 @@
 const unsigned int MAX_WORD_NUM = 10005;
 const unsigned int MAX_WORD_LEN = 100;
 
+class UIUTILITY_API StreamReader
+{
+public:
+	char** read(std::istream & in);
+	unsigned int getReadLen()const { return read_len; }
+
+private:
+	unsigned int read_len = 0;
+};
+
 class UIUTILITY_API FileReader
 {
 public:
