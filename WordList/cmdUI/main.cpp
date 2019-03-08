@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
 	// TODO check file validity
 
 	// Call Core
-	char* res[MAX_WORD_NUM];
+	char** res = new char*[MAX_WORD_NUM+1];
 	int res_len;
 	if (setting.isMaxChar()) {
 		res_len = Core::gen_chain_char(
@@ -77,5 +77,6 @@ int main(int argc, char * argv[]) {
 	ofs.close();
 	cout << endl;
 
+	delete[] res;
 	return 0;
 }

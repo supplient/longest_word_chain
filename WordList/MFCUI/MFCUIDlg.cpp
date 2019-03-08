@@ -185,7 +185,7 @@ void CMFCUIDlg::OnEnUpdateEdith()
 	}
 
 	// check alpha
-	char c = str.GetAt(0);
+	wchar_t c = str.GetAt(0);
 	if (!(c >= 'a' && c <= 'z')) {
 		// not alpha
 		pEdit->SetWindowTextW(L"");
@@ -210,7 +210,7 @@ void CMFCUIDlg::OnEnUpdateEditt()
 	}
 
 	// check alpha
-	char c = str.GetAt(0);
+	wchar_t c = str.GetAt(0);
 	if (!(c >= 'a' && c <= 'z')) {
 		// not alpha
 		pEdit->SetWindowTextW(L"");
@@ -272,8 +272,8 @@ void CMFCUIDlg::OnBnClickedOk()
 	// Get & Check h,t
 	bool use_h;
 	bool use_t;
-	char char_h = 0;
-	char char_t = 0;
+	wchar_t char_h = 0;
+	wchar_t char_t = 0;
 	
 	use_h = ((CButton*)GetDlgItem(IDC_CHECK_h))->GetCheck();
 	use_t = ((CButton*)GetDlgItem(IDC_CHECK_t))->GetCheck();
@@ -316,31 +316,32 @@ void CMFCUIDlg::OnBnClickedOk()
 	enable_loop = ((CButton*)GetDlgItem(IDC_CHECK_r))->GetCheck();
 
 	// Call Core
-	char* res[MAX_WORD_NUM];
+	char** res = new char*[MAX_WORD_NUM + 1];
 	int res_len;
 	if (max_char) {
 		res_len = Core::gen_chain_char(
 			words, len, res,
-			char_h, char_t,
+			(char)char_h, (char)char_t,
 			enable_loop
 		);
 	}
 	else {
 		res_len = Core::gen_chain_word(
 			words, len, res,
-			char_h, char_t,
+			(char)char_h, (char)char_t,
 			enable_loop
 		);
 	}
 
 	// Update output show control
-
 	CString str_output;
 	for (int i = 0; i < res_len; i++) {
 		str_output.Append(CString(res[i]));
 		str_output.Append(L"\r\n");
 	}
 	((CEdit*)GetDlgItem(IDC_EDIT_output))->SetWindowTextW(str_output);
+
+	delete[] res;
 }
 
 void CMFCUIDlg::OnBnClickedRadioinputhand()

@@ -9,7 +9,7 @@ ChainSolver::ChainSolver(void) {
 
 unsigned int ChainSolver::APHash(std::string s) {
 	unsigned int hash = 0;
-	int i,k;
+	unsigned int i,k;
 	for (i = 0,k=0; k<s.length(); i++)
 	{
 		if ((i & 1) == 0)
