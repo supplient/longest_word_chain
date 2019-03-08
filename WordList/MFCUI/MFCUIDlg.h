@@ -42,6 +42,4 @@ public:
 
 private:
 	void callWarningBox(LPCTSTR str);
-public:
-	afx_msg void OnEnChangeEdith();
 };

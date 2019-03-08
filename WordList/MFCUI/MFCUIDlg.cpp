@@ -7,6 +7,8 @@
 #include "MFCUIDlg.h"
 #include "afxdialogex.h"
 
+#include "../Core/Core.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -40,7 +42,6 @@ BEGIN_MESSAGE_MAP(CMFCUIDlg, CDialogEx)
 	ON_EN_UPDATE(IDC_EDIT_h, &CMFCUIDlg::OnEnUpdateEdith)
 	ON_EN_UPDATE(IDC_EDIT_t, &CMFCUIDlg::OnEnUpdateEditt)
 	ON_BN_CLICKED(IDOK, &CMFCUIDlg::OnBnClickedOk)
-	ON_EN_CHANGE(IDC_EDIT_h, &CMFCUIDlg::OnEnChangeEdith)
 END_MESSAGE_MAP()
 
 
@@ -268,17 +269,35 @@ void CMFCUIDlg::OnBnClickedOk()
 	bool enable_loop;
 	enable_loop = ((CButton*)GetDlgItem(IDC_CHECK_r))->GetCheck();
 
-	// TODO output the command for user to check
-}
+	// Output the command for user to check
+	CString str_cmd;
+	if (enable_loop)
+		str_cmd.Append(L" -r");
+	if (use_h) {
+		str_cmd.Append(L" -h ");
+		str_cmd.Append(CString(char_h, 1));
+	}
+	if (use_t) {
+		str_cmd.Append(L" -t ");
+		str_cmd.Append(CString(char_t, 1));
+	}
+	if (max_char)
+		str_cmd.Append(L" -c ");
+	else
+		str_cmd.Append(L" -w ");
+	str_cmd.Append(str_path);
 
+	if (MessageBoxW(
+		L"Using options:\n" + str_cmd, 
+		L"Check Options", 
+		MB_OKCANCEL | MB_SYSTEMMODAL)
+			!= IDOK) {
+		return;
+	}
 
-void CMFCUIDlg::OnEnChangeEdith()
-{
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+	// Update cmd show control
+	((CEdit*)GetDlgItem(IDC_EDIT_cmd))->SetWindowTextW(str_cmd);
 
-	// TODO:  在此添加控件通知处理程序代码
+	// TODO Link to Core
 }
 
