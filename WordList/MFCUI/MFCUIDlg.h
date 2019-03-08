@@ -42,4 +42,8 @@ public:
 
 private:
 	void callWarningBox(LPCTSTR str);
+public:
+	afx_msg void OnBnClickedRadioinputhand();
+	BOOL m_input_file;
+	afx_msg void OnBnClickedButtonExport();
 };
