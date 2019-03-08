@@ -36,3 +36,6 @@ Debug
 
 # Code Coverage
 **/LastCoverageResults.log
+
+# MFC
+*.aps
