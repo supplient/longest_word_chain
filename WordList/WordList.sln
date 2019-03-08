@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoreTest", "CoreTest\CoreTe
 		{AF724A16-0F71-4CEB-A4F1-653D2E9243E2} = {AF724A16-0F71-4CEB-A4F1-653D2E9243E2}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCUI", "MFCUI\MFCUI.vcxproj", "{705BC73C-C75F-4715-95D4-F1743F5FF965}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -54,6 +56,14 @@ Global
 		{46CC2C03-BC1F-457B-8B32-39EF975A8197}.Release|x64.Build.0 = Release|x64
 		{46CC2C03-BC1F-457B-8B32-39EF975A8197}.Release|x86.ActiveCfg = Release|Win32
 		{46CC2C03-BC1F-457B-8B32-39EF975A8197}.Release|x86.Build.0 = Release|Win32
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Debug|x64.ActiveCfg = Debug|x64
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Debug|x64.Build.0 = Debug|x64
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Debug|x86.ActiveCfg = Debug|Win32
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Debug|x86.Build.0 = Debug|Win32
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Release|x64.ActiveCfg = Release|x64
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Release|x64.Build.0 = Release|x64
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Release|x86.ActiveCfg = Release|Win32
+		{705BC73C-C75F-4715-95D4-F1743F5FF965}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
