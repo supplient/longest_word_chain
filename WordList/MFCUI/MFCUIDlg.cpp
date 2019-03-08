@@ -8,6 +8,10 @@
 #include "afxdialogex.h"
 
 #include "../Core/Core.h"
+#include "../UIUtility/UIUtility.h"
+
+#include <string>
+#include <fstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -226,8 +230,8 @@ void CMFCUIDlg::OnBnClickedOk()
 	// Get & Check h,t
 	bool use_h;
 	bool use_t;
-	char char_h;
-	char char_t;
+	char char_h = 0;
+	char char_t = 0;
 	
 	use_h = ((CButton*)GetDlgItem(IDC_CHECK_h))->GetCheck();
 	use_t = ((CButton*)GetDlgItem(IDC_CHECK_t))->GetCheck();
@@ -298,6 +302,54 @@ void CMFCUIDlg::OnBnClickedOk()
 	// Update cmd show control
 	((CEdit*)GetDlgItem(IDC_EDIT_cmd))->SetWindowTextW(str_cmd);
 
-	// TODO Link to Core
+	// Read File
+	char **words;
+	unsigned int len;
+	try {
+		FileReader reader;
+		words = reader.read(std::string(CW2A(str_path.GetString())));
+		len = reader.getReadLen();
+	}
+	catch (std::string e) {
+		callWarningBox(CString(e.c_str()));
+		return;
+	}
+
+	// Call Core
+	char* res[MAX_WORD_NUM];
+	int res_len;
+	if (max_char) {
+		res_len = Core::gen_chain_char(
+			words, len, res,
+			char_h, char_t,
+			enable_loop
+		);
+	}
+	else {
+		res_len = Core::gen_chain_word(
+			words, len, res,
+			char_h, char_t,
+			enable_loop
+		);
+	}
+
+	// Output result to File
+	// && Update output show control
+	std::string output_path = "../BIN/solution.txt";
+	std::ofstream ofs(output_path);
+	if (!ofs.is_open()) {
+		callWarningBox(
+			L"Open " + CString(output_path.c_str()) + L" failed.");
+		return;
+	}
+
+	CString str_output;
+	for (int i = 0; i < res_len; i++) {
+		ofs << res[i] << std::endl;
+		str_output.Append(CString(res[i]));
+		str_output.Append(L"\t");
+	}
+	ofs.close();
+	((CEdit*)GetDlgItem(IDC_EDIT_output))->SetWindowTextW(str_output);
 }
 
