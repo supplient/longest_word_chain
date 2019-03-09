@@ -4,6 +4,9 @@
 #include <cstring>
 #include<iterator>
 
+std::string w_c_h_t_ChainLoop = "words construct a loop";
+
+
 ChainSolver::ChainSolver(void) {
 }
 
@@ -29,7 +32,6 @@ int ChainSolver::CreateMap(char* c_s, bool isGetMaxChar) {
 	Edge edge;
 	unsigned int code = APHash(s);
 	if (inputWord.find(code) != inputWord.end()) {// Repeat Word!
-		// TODO: When Hash Collisions happen, code need change and insert.
 		return 0;
 	}
 	inputWord.insert(std::pair<unsigned int, std::string>(code,s));
@@ -48,7 +50,7 @@ int ChainSolver::Recursion(std::vector<std::string>& path, int length, int point
 			continue;
 		path.push_back(iter.word);
 		if (isUsedPoint[iter.next] == true && !isEnableLoop && point != iter.next) {
-			//TODO: throw an EXCEPTION "words construct a loop!"
+			throw w_c_h_t_ChainLoop;
 		}
 		isUsedPoint[iter.next] = true;
 		isUsedEdge.find(iter.code)->second = true;
