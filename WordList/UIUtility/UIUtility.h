@@ -9,7 +9,7 @@
 #include <string>
 
 const unsigned int MAX_WORD_NUM = 10005;
-const unsigned int MAX_WORD_LEN = 100;
+const unsigned int MAX_WORD_LEN = 200;
 
 class UIUTILITY_API StreamReader
 {

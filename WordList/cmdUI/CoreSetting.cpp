@@ -5,7 +5,7 @@ using namespace std;
 using namespace cmdUI;
 
 string w_c_set_error = "-w and -c cannot set at the same time.";
-string w_c_follow_error = "When using -h or -t, you must specify a filepath followed.";
+string w_c_follow_error = "When using -w or -c, you must specify a filepath followed.";
 string h_t_follow_error = "When using -h or -t, you must specify one char followed.";
 string set_again_error = "Any argument can only set by once.";
 
@@ -33,6 +33,7 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 				throw h_t_follow_error;
 			head = temp[0];
 			wait_head = false;
+			continue;
 		}
 		if (wait_tail) {
 			string temp = strarg;
@@ -40,6 +41,7 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 				throw h_t_follow_error;
 			tail = temp[0];
 			wait_tail = false;
+			continue;
 		}
 
 		if (strarg == "-w") {
@@ -83,4 +85,7 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 		throw w_c_follow_error;
 	if (wait_head || wait_tail)
 		throw h_t_follow_error;
+
+	if (!max_char && !max_word)
+		throw string("Either -w or -c must be set.");
 }

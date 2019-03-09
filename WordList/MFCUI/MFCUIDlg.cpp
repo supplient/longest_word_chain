@@ -112,7 +112,7 @@ HCURSOR CMFCUIDlg::OnQueryDragIcon()
 void CMFCUIDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	TCHAR szFilter[] = _T("文本文件(*.txt)|*.txt|所有文件(*.*)|*.*||");
+	TCHAR szFilter[] = _T("所有文件(*.*)|*.*||"); 
 	// 构造打开文件对话框   
 	CFileDialog fileDlg(TRUE, _T("txt"), NULL, 0, szFilter, this);
 	CString strFilePath;
@@ -254,7 +254,7 @@ void CMFCUIDlg::OnBnClickedOk()
 		CString str_input;
 		((CEdit*)GetDlgItem(IDC_EDIT_input))->GetWindowTextW(str_input);
 		
-		// TODO Think about whether handy input need non-empty?
+		// NOTE We allow empty string as input
 
 		// Process Input
 		try {
@@ -318,19 +318,26 @@ void CMFCUIDlg::OnBnClickedOk()
 	// Call Core
 	char** res = new char*[MAX_WORD_NUM + 1];
 	int res_len;
-	if (max_char) {
-		res_len = Core::gen_chain_char(
-			words, len, res,
-			(char)char_h, (char)char_t,
-			enable_loop
-		);
+	try {
+		if (max_char) {
+			res_len = Core::gen_chain_char(
+				words, len, res,
+				(char)char_h, (char)char_t,
+				enable_loop
+			);
+		}
+		else {
+			res_len = Core::gen_chain_word(
+				words, len, res,
+				(char)char_h, (char)char_t,
+				enable_loop
+			);
+		}
 	}
-	else {
-		res_len = Core::gen_chain_word(
-			words, len, res,
-			(char)char_h, (char)char_t,
-			enable_loop
-		);
+	catch (std::string e) {
+		callWarningBox(CString(e.c_str()));
+		delete[] res;
+		return;
 	}
 
 	// Update output show control
