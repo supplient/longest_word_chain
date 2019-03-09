@@ -30,11 +30,13 @@ int ChainSolver::CreateMap(char *c_s, bool isGetMaxChar) {
 }
 
 int ChainSolver::Recursion(std::vector<std::string> &path, int length, int point) {
+	int len = length;
 	for (auto iter : map[point].toLast) {
 		if (isUsedEdge[iter.code])
 			continue;
 		path.push_back(iter.word);
 		if (iter.next == point) {
+			len+=iter.weight;
 			continue;
 		}
 		if (isUsedPoint[iter.next] && !isEnableLoop && point != iter.next) {
@@ -43,13 +45,13 @@ int ChainSolver::Recursion(std::vector<std::string> &path, int length, int point
 		isUsedPoint[iter.next] = true;
 		isUsedEdge[iter.code] = true;
 		//NOTE: when needing max num: weight=1, when needing max char: weight = word's length.
-		Recursion(path, length + iter.weight, iter.next);
+		Recursion(path, len + iter.weight, iter.next);
 
 		isUsedEdge[iter.code] = false;
 		isUsedPoint[iter.next] = false;
 		path.pop_back();
 	}
-	if (length > maxLen && (tail == -1 || point == tail)) {
+	if (len > maxLen && (tail == -1 || point == tail)) {
 		maxLen = length;
 		maxPath.assign(path.begin(), path.end());
 	}
@@ -65,8 +67,7 @@ int ChainSolver::Recursion(std::vector<std::string> &path, int length, int point
 	return 0;
 }
 
-int
-ChainSolver::get_max_chain(char *input[], int num, char *result[], char head_input, char tail_input, bool isGetMaxChar,
+int ChainSolver::get_max_chain(char *input[], int num, char *result[], char head_input, char tail_input, bool isGetMaxChar,
 	bool enable_loop) {
 	int i; // NOTE: maxDegree seems to be an useless remaining variable? ANS: yes, it has been deleted.
 	std::vector<std::string> path;
