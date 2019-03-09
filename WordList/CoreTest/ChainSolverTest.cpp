@@ -98,10 +98,8 @@ namespace CoreTest
 				"bcde",
 				"cdef"
 			};
-			vector<char**> res;
-			vector<int> res_len;
-
-			testRightMulti(words, 3, res, res_len);
+			char* res[3];
+			Assert::AreEqual(0, Core::gen_chain_word(words, 3, res, 0, 0, false));
 		}
 
 		TEST_METHOD(multi_occur) {
