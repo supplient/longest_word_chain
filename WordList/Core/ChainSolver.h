@@ -24,7 +24,7 @@ private:
 	WordMap map[26];
 	std::unordered_map<std::string, int> inputWord;
 	std::vector<std::string> maxPath;
-	bool isUsedEdge[100];
+	bool isUsedEdge[10005];
 
 	int CreateMap(char *s, bool isGetMaxChar);
 
