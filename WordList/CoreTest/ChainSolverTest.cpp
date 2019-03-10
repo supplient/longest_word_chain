@@ -525,4 +525,33 @@ namespace CoreTest
 			testRight(words, 7, res, 7, false, 0, 0, true);
 		}
 	};
+
+	TEST_CLASS(exception) {
+	public:
+		TEST_METHOD(loop_without_r) {
+			char* words[] = {
+				"abc",
+				"cba",
+				"adc"
+			};
+			char* res[3];
+
+			bool has_error = false;
+			try {
+				Core::gen_chain_word(words, 3, res, 0, 0, false);
+			}
+			catch (string e) {
+				has_error = true;
+			}
+
+			try {
+				Core::gen_chain_char(words, 3, res, 0, 0, false);
+			}
+			catch (string e) {
+				has_error = true;
+			}
+
+			Assert::IsTrue(has_error);
+		}
+	};
 }
