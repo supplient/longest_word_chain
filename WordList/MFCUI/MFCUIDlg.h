@@ -46,4 +46,5 @@ public:
 	afx_msg void OnBnClickedRadioinputhand();
 	BOOL m_input_file;
 	afx_msg void OnBnClickedButtonExport();
+	afx_msg void OnBnClickedButtonExportOpen();
 };
