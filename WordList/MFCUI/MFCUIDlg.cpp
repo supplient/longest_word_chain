@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CMFCUIDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO_input_hand, &CMFCUIDlg::OnBnClickedRadioinputhand)
 	ON_BN_CLICKED(IDC_RADIO_input_file, &CMFCUIDlg::OnBnClickedRadioinputhand)
 	ON_BN_CLICKED(IDC_BUTTON_EXPORT, &CMFCUIDlg::OnBnClickedButtonExport)
+	ON_BN_CLICKED(IDC_BUTTON_EXPORT_OPEN, &CMFCUIDlg::OnBnClickedButtonExportOpen)
 END_MESSAGE_MAP()
 
 
@@ -111,7 +112,6 @@ HCURSOR CMFCUIDlg::OnQueryDragIcon()
 
 void CMFCUIDlg::OnBnClickedButton1()
 {
-	// TODO: 在此添加控件通知处理程序代码
 	TCHAR szFilter[] = _T("所有文件(*.*)|*.*||"); 
 	// 构造打开文件对话框   
 	CFileDialog fileDlg(TRUE, _T("txt"), NULL, 0, szFilter, this);
@@ -369,8 +369,12 @@ void CMFCUIDlg::OnBnClickedRadioinputhand()
 
 void CMFCUIDlg::OnBnClickedButtonExport()
 {
+	// Get Path
+	CString c_output_path;
+	((CEdit*)GetDlgItem(IDC_EDIT_EXPORT_PATH))->GetWindowTextW(c_output_path);
+
 	// Output result to File
-	std::string output_path = "../BIN/solution.txt";
+	std::string output_path(CW2A(c_output_path.GetString()));
 	std::ofstream ofs(output_path);
 	if (!ofs.is_open()) {
 		callWarningBox(
@@ -386,4 +390,22 @@ void CMFCUIDlg::OnBnClickedButtonExport()
 
 	// Notice user.
 	MessageBox(L"Has exported to " + CString(output_path.c_str()));
+}
+
+
+
+void CMFCUIDlg::OnBnClickedButtonExportOpen()
+{
+	TCHAR szFilter[] = _T("所有文件(*.*)|*.*||"); 
+	// 构造打开文件对话框   
+	CFileDialog fileDlg(TRUE, _T("txt"), NULL, 0, szFilter, this);
+	CString strFilePath;
+
+	// 显示打开文件对话框   
+	if (IDOK == fileDlg.DoModal())
+	{
+		// 如果点击了文件对话框上的“打开”按钮，则将选择的文件路径显示到编辑框里   
+		strFilePath = fileDlg.GetPathName();
+		SetDlgItemText(IDC_EDIT_EXPORT_PATH, strFilePath);
+	}
 }
