@@ -12,6 +12,7 @@ std::string para_head_error = "get unreasonable head parameter";
 std::string para_loop_error = "get unreasonable enable_loop parameter";
 std::string para_res_error = "get unreasonable res parameter";
 std::string para_input_error = "get unreasonable input & num parameter";
+std::string illegal_test = "you are making trouble out of nothing";
 
 int ChainSolver::CreateMap(char *c_s, bool isGetMaxChar) {
 	try {
@@ -82,6 +83,10 @@ int ChainSolver::get_max_chain(char *input[], int num, char *result[], char head
 	bool enable_loop) {
 	int i; // NOTE: maxDegree seems to be an useless remaining variable? ANS: yes, it has been deleted.
 	std::vector<std::string> path;
+	if (num > 10000) {
+		throw illegal_test;
+	}
+
 	if (tail_input != 0 && (tail_input < 'a' || tail_input > 'z')) {
 		throw para_tail_error;
 	}
