@@ -14,18 +14,23 @@
 
 边和点的struct分别是：
 
->struct Edge {  
->>std::string word;  
->>int code;  
->>int weight;  
->>int next;  
->};  
+```C++
+struct Edge {  
+	std::string word;  
+	int code;  
+	int weight;  
+	int next;  
+}; 
+``` 
 
 边Edge的word存储输入的原始字符串；code是该边的识别编码；weight是该边权重，weight默认为1，在-c时为字符串长度；next是字符串末尾字符ascii码-'a'的值，方便将点的编码都归为0-25。
 
->struct WordMap {
->>std::vector<Edge> toLast;
->};
+	
+```C++
+struct WordMap {
+	std::vector<Edge> toLast;
+};
+```
 	
 点WordMap只包含一个边的vector。
 	
