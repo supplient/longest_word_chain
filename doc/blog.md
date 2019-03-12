@@ -73,20 +73,20 @@ char *input[], int num, char *result[], char head, char tail, bool isGetMaxChar,
 我们对DFS穷举法的主要优化是自环剪枝，很明显在求-r最长路径的过程中自环是必定需要走的边，不需要再递归判定了，所以在Recursion进入节点的时候先将该节点所有**未走过的自环边**加入路径中。
 
 ```C++
-		//ensure the edge that wait to push is not used before.
-		if (isUsedEdge[iter.code])
-			continue;//'continue' will jump this edge.
-		//push every self-circle edge.
-		path.push_back(iter.word);
-		if (iter.next == point) {
-			len+=iter.weight;
-			continue;
-		}
-		...
+	//ensure the edge that wait to push is not used before.
+	if (isUsedEdge[iter.code])
+		continue;//'continue' will jump this edge.
+	//push every self-circle edge.
+	path.push_back(iter.word);
+	if (iter.next == point) {
+		len+=iter.weight;
+		continue;
+	}
+	...
         ...
         ...
-		//pop every self-circle edge.
-		for (auto iter : map[point].toLast) {
+	//pop every self-circle edge.
+	for (auto iter : map[point].toLast) {
             if (iter.next == point) {
                 isUsedEdge[iter.code] = false;
                 path.pop_back();
@@ -94,7 +94,7 @@ char *input[], int num, char *result[], char head, char tail, bool isGetMaxChar,
             else {
                 break;
             }
-		}
+	}
 ```
 
 
