@@ -11,7 +11,6 @@ struct Edge {
 };
 struct WordMap {
 	std::vector<Edge> toLast;
-	std::vector<Edge> toFirst;
 };
 
 class ChainSolver {
@@ -27,7 +26,6 @@ private:
 	bool isUsedEdge[10005];
 
 	int CreateMap(char *s, bool isGetMaxChar);
-
 	int Recursion(std::vector<std::string> &path, int length, int point);
 
 public:
