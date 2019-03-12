@@ -15,7 +15,7 @@
 边和点的struct分别是：
 
 >struct Edge {  
->    std::string word;  
+>&nbspstd::string word;  
 >    int code;  
 >    int weight;  
 >    int next;  
