@@ -38,3 +38,6 @@ Debug
 
 # MFC
 *.aps
+*.exp
+*.ilk
+*.pdb

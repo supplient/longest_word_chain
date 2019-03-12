@@ -77,7 +77,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../BIN/</OutDir>
+    <OutDir>../../BIN/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>../cmdUI/Debug/pch.obj;../cmdUI/Debug/CoreSetting.obj;../BIN/Core.lib;../BIN/UIUtility.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../cmdUI/Debug/pch.obj;../cmdUI/Debug/CoreSetting.obj;../../BIN/Core.lib;../../BIN/UIUtility.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>

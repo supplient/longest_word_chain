@@ -63,7 +63,7 @@ int main(int argc, char * argv[]) {
 	}
 
 	// Output result
-	string output_path = "../BIN/solution.txt";
+	string output_path = "../../BIN/solution.txt";
 	ofstream ofs(output_path);
 	if (!ofs.is_open()) {
 		cerr << "Open " + output_path + " failed." << endl;
