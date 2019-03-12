@@ -32,6 +32,12 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 			if (temp.length() != 1)
 				throw h_t_follow_error;
 			head = temp[0];
+			if (head >= 'A' && head <= 'Z')
+				head = head - ('A' - 'a');
+			else if (head >= 'a' && head <= 'z')
+				;
+			else
+				throw string("Invalid head: " + string(head, 1));
 			wait_head = false;
 			continue;
 		}
@@ -40,6 +46,12 @@ void CoreSetting::parseFromArgc(int argc, char * argv[])
 			if (temp.length() != 1)
 				throw h_t_follow_error;
 			tail = temp[0];
+			if (tail >= 'A' && tail <= 'Z')
+				tail = tail - ('A' - 'a');
+			else if (tail >= 'a' && tail <= 'z')
+				;
+			else
+				throw string("Invalid tail: " + string(tail, 1));
 			wait_tail = false;
 			continue;
 		}
