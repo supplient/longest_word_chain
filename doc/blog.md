@@ -36,12 +36,66 @@ struct WordMap {
 	
 ## c.类和函数
 
-核心计算包括两个类Core和ChainSolver，Core负责标准输入，所有外部类和函数只调用Core，Core再调用ChainSolver。
+核心计算包括两个类Core和ChainSolver，Core负责标准输入，所有外部类和函数只调用Core，Core再调用ChainSolver的get_max_chain函数。
+
+ChainSolver类有三个函数公有函数get_max_chain、私有函数CreateMap、私有函数Recursion，get_max_chain调用CreateMap来创建图，再调用Recursion递归DFS创建过的图。
+
+### get_max_chain函数
+
+接收以下参数：
+```C++
+char *input[], int num, char *result[], char head, char tail, bool isGetMaxChar, bool enable_loop
+```
+
+以上参数分别是输入的单词数组，输入的单词量，需要输出结果的result，head为-h的头部要求，tail为-t的尾部要求，isGetMaxChar是-c的边权重修改要求，enable_loop是-r的要求。
+
+### CreateMap函数
+
+这个部分需要考虑重复输入的单词并将其抛弃，map<string,int>类型的inputWord存储的是已录入的单词。
+```C++
+	if (inputWord.find(s) != inputWord.end()) {
+		return 0;
+	}
+	inputWord.insert(std::pair<std::string, int>(s, code));
+```
+单词编码部分使用最普通的线性编码0-100，最开始想到过APHash编码但是对于作业里面的小规模的输入太过拖沓。
+
+### Recursion函数
+
+使用的是递归法DFS，对传入节点进行路径穷举遍历，进入过的点和边都会被记载在isUsedPoint和isUsedEdge中，递归返回后再将记载记录释放。优化部分会在第六节描述。
+
 
 # 5
 # TODO UML
 
 # 6
+
+我们对DFS穷举法的主要优化是自环剪枝，很明显在求-r最长路径的过程中自环是必定需要走的边，不需要再递归判定了，所以在Recursion进入节点的时候先将该节点所有**未走过的自环边**加入路径中。
+
+```C++
+		//ensure the edge that wait to push is not used before.
+		if (isUsedEdge[iter.code])
+			continue;//'continue' will jump this edge.
+		//push every self-circle edge.
+		path.push_back(iter.word);
+		if (iter.next == point) {
+			len+=iter.weight;
+			continue;
+		}
+		...
+        ...
+        ...
+		//pop every self-circle edge.
+		for (auto iter : map[point].toLast) {
+            if (iter.next == point) {
+                isUsedEdge[iter.code] = false;
+                path.pop_back();
+            }
+            else {
+                break;
+            }
+		}
+```
 
 
 # 8
@@ -269,3 +323,18 @@ UI模块的设计已在10中详细描述，此处不重复。
 另一个不顺利是因为他们组是直接在Core类中实现了算法，所以他们的Core.h中包含了一些运行需要的库函数的头文件。而在我们的机子上，他们所需要的stdc++.h头文件并不存在，所以我们不得不删去这句，再包含vector和map来满足编译需求。
 
 衔接完成后在测试过程中也发现了不同。主要是需求理解的不同，对于他们的Core模块而言，空输入、空输出都是会抛出异常的、不合法的，但对于我们的程序而言，这些都是合法的。
+
+# 12
+
+我们两人的结对一直紧紧围绕邹欣老师《构建之法》一书的要求：
+
+>在结对编程模式下，一对程序员肩并肩、平等
+>地、互补地进行开发工作。他们并排坐在一台电
+>脑前，面对同一个显示器，使用同一个键盘、同
+>一个鼠标一起工作。他们一起分析，一起设计，
+>一起写测试用例，一起编码，一起做单元测试，
+>一起做集成测试，一起写文档等。
+
+我们两人在此次结对编程之前就已熟识，这次结对编程的任务也必然是无缝衔接般地完成。在结对的过程中我们大部分地代码都是坐在一起完成的，一起分析一起设计。当然第一次尝试这样的编程方式也会带来很多疑惑，比如编程一方难免会出现一些不必要的而且较为复杂的构想，比如在计算核心的部分是否需要将字符串进行哈希编码，此时需要另一方加入思考博弈，这样的过程很有趣不过也很花时间。
+
+总的来说，我们觉得结对编程是个高强度、注重思维碰撞的编程方式，和传统那种“各自码各自的代码再push”的方式，结对编程的过程中我们感受到了实时性的交流和code review，这是一种非常敏捷的软件开发方式。
