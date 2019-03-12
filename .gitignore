@@ -27,7 +27,6 @@ Debug
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.out
