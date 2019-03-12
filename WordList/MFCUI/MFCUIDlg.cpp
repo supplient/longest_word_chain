@@ -7,7 +7,7 @@
 #include "MFCUIDlg.h"
 #include "afxdialogex.h"
 
-#include "../Core/Core.h"
+#include "../Core_ex.h"
 #include "../UIUtility/UIUtility.h"
 
 #include <string>
@@ -318,16 +318,17 @@ void CMFCUIDlg::OnBnClickedOk()
 	// Call Core
 	char** res = new char*[MAX_WORD_NUM + 1];
 	int res_len;
+	Core core;
 	try {
 		if (max_char) {
-			res_len = Core::gen_chain_char(
+			res_len = core.gen_chain_char(
 				words, len, res,
 				(char)char_h, (char)char_t,
 				enable_loop
 			);
 		}
 		else {
-			res_len = Core::gen_chain_word(
+			res_len = core.gen_chain_word(
 				words, len, res,
 				(char)char_h, (char)char_t,
 				enable_loop

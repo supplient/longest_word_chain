@@ -97,7 +97,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>../BIN/Core.lib;../BIN/UIUtility.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../BIN/dll_core.lib;../BIN/UIUtility.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
       <AdditionalLibraryDirectories>../BIN/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

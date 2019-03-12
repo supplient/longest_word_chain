@@ -5,13 +5,16 @@
 #endif
 
 #include <iostream>
-#include "stdc++.h"
+#include <vector>
+#include <map>
 using namespace std;
+
 #define HEAD_CHAR_ERROR "Head char is not in a-z"
 #define LOOP_ERROR "There exists loop in input, but we don't support -r"
 #define TAIL_CHAR_ERROR "Tail char is not in a-z."
 #define WORD_ILLEGAL "Some words in list has characters besides lower." 
 #define MEMORY_ERROR "There occur some errors during visiting memory"
+
 typedef struct {
 	string word;
 	int length;

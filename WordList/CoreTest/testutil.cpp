@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "testutil.h"
-#include "../Core/Core.h"
+#include "../Core_ex.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -21,10 +21,11 @@ void testRight(char* words[], int words_len, char* res[], int res_len,
 	char** ret_res = new char*[words_len+1];
 	int ret_len;
 
+	Core core;
 	if (is_max_char)
-		ret_len = Core::gen_chain_char(words, words_len, ret_res, head, tail, enable_loop);
+		ret_len = core.gen_chain_char(words, words_len, ret_res, head, tail, enable_loop);
 	else
-		ret_len = Core::gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
+		ret_len = core.gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
 
 	Assert::AreEqual(ret_len, res_len);
 	
@@ -50,10 +51,11 @@ void testRightMulti(char* words[], int words_len, vector<char**> res, vector<int
 	char** ret_res = new char*[words_len+1];
 	int ret_len;
 
+	Core core;
 	if (is_max_char)
-		ret_len = Core::gen_chain_char(words, words_len, ret_res, head, tail, enable_loop);
+		ret_len = core.gen_chain_char(words, words_len, ret_res, head, tail, enable_loop);
 	else
-		ret_len = Core::gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
+		ret_len = core.gen_chain_word(words, words_len, ret_res, head, tail, enable_loop);
 
 
 	bool success = false;

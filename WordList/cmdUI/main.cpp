@@ -7,7 +7,7 @@
 #include "CoreSetting.h"
 #include "../UIUtility/UIUtility.h"
 
-#include "../Core/Core.h"
+#include "../Core_ex.h"
 
 using namespace std;
 using namespace cmdUI;
@@ -45,14 +45,15 @@ int main(int argc, char * argv[]) {
 	// Call Core
 	char** res = new char*[MAX_WORD_NUM+1];
 	int res_len;
+	Core core;
 	if (setting.isMaxChar()) {
-		res_len = Core::gen_chain_char(
+		res_len = core.gen_chain_char(
 			words, len, res, 
 			setting.getHead(), setting.getTail(), 
 			setting.isLoopEnable());
 	}
 	else if (setting.isMaxWord()) {
-		res_len = Core::gen_chain_word(
+		res_len = core.gen_chain_word(
 			words, len, res,
 			setting.getHead(), setting.getTail(),
 			setting.isLoopEnable());
