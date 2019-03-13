@@ -99,7 +99,7 @@ char *input[], int num, char *result[], char head, char tail, bool isGetMaxChar,
 
 
 # 8
-Core���ֵ�Ԫ���ԵĴ��븲���ʣ�
+Core模块的单元测试覆盖率：
 ![](cover.png)
 
 对Core模块进行单元测试的过程是：构造测试样例=>传入进Core模块=>检查返回的单词链的长度与内容是否正确。
