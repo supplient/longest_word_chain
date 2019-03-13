@@ -96,7 +96,11 @@ char *input[], int num, char *result[], char head, char tail, bool isGetMaxChar,
             }
 	}
 ```
+输入为55个完全随机的单词的情况下，VS性能分析结果如下：
+![](total_ana.png)
+![](function_ana.png)
 
+从图中可以看到ChainSolver::get_max_chain函数占用CPU资源总计约30%, 占整个后端main调用的四分之三，递归遍历毫无疑问是整个项目里面的性能瓶颈。
 
 # 8
 Core模块的单元测试覆盖率：
