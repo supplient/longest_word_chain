@@ -176,7 +176,14 @@ Core模块的单元测试覆盖率：
 我们简单地针对Core执行中会抛出的异常构造对应的样例，当该样例被输入后，尝试捕获异常。
 
 # 9.
-计算模块部分异常处理：
+计算部分一处异常处理，当没有启用-r功能却检查到有环图时将抛出异常w_c_h_t_ChainLoop，以下代码的判定条件是该边的终点已被走过，同时没有开启-r，同时不是自环。
+
+    		if (isUsedPoint[iter.next] && !isEnableLoop && point != iter.next) {
+    			throw w_c_h_t_ChainLoop;
+    		}
+
+
+
 
 # 10.
 界面分为三个组成部分：
