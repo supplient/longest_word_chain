@@ -178,12 +178,74 @@ Core模块的单元测试覆盖率：
 # 9.
 计算部分一处异常处理，当没有启用-r功能却检查到有环图时将抛出异常w_c_h_t_ChainLoop，以下代码的判定条件是该边的终点已被走过，同时没有开启-r，同时不是自环。
 
-    		if (isUsedPoint[iter.next] && !isEnableLoop && point != iter.next) {
-    			throw w_c_h_t_ChainLoop;
-    		}
-
-
-
+```C++
+	if (isUsedPoint[iter.next] && !isEnableLoop && point != iter.next) {
+		throw w_c_h_t_ChainLoop;
+	}
+```
+另外也需要考虑对Core的单元测试异常抛出，其实以下异常在程序作为整体运行时不会抛出：
+传入的尾部要求是否合理：
+```C++
+	if (tail_input != 0 && (tail_input < 'a' || tail_input > 'z')) {
+		throw para_tail_error;
+	}
+```
+传入的头部要求是否合理：
+```C++
+	if (head_input != 0 && (head_input <'a' || head_input > 'z')) {
+		throw para_head_error;
+	}
+```
+传入的enable_loop是否合法：
+```C++
+	try {
+		isEnableLoop = enable_loop;
+	}
+	catch(...){
+		throw para_loop_error;
+	}
+```
+传入的input数组里面是不是的确有num个值：
+```C++
+	for (i = 0; i < num; i++) {
+		try {
+			CreateMap(input[i], isGetMaxChar);
+		}
+		catch (...) {
+			throw para_input_error;
+		}
+	}
+```
+传入的res是否能接受结果：
+```C++
+	try {
+		for (auto iter : maxPath) {
+			char *new_str = new char[iter.length() + 2];
+			// std::cout << iter << " ";
+			for (unsigned int j = 0; j < iter.length(); j++)
+				new_str[j] = iter[j];
+			new_str[iter.length()] = '\0';
+			result[i] = new_str; // TODO release such memory
+			i++;
+		}
+	}
+	catch (...) {
+		throw para_res_error;
+	}
+```
+传入input输入字符串是否包括非法字符(在创建图时统一抛出异常)：
+```C++
+	int ChainSolver::CreateMap(char *c_s, bool isGetMaxChar) {
+	try {
+		...
+		...
+		...
+	}
+	catch (...) {
+		throw create_map_error;
+	}
+	return 0;
+```
 
 # 10.
 界面分为三个组成部分：
