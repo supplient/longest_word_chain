@@ -74,6 +74,7 @@ int main(int argc, char * argv[]) {
 		ofs << res[i] << endl;
 		cout << res[i] << '\t';
 	}
+	ofs.flush();
 	ofs.close();
 	cout << endl;
 
